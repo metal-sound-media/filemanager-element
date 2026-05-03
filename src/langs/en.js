@@ -1,0 +1,15 @@
+export default {
+  delete: 'Delete',
+  deleteConfirm: 'Do you really want to delete this file ?',
+  newFolderPlaceholder: 'Folder name',
+  deleteFolder: 'Delete this folder',
+  emptyTitle: 'This folder is empty',
+  emptyDescription: 'Drop a file here to upload it',
+  createFolder: 'New folder',
+  renameFolder: 'Rename folder',
+  copy: 'Copy link',
+  size: 'Size',
+  filename: 'Name',
+  serverError: 'Server error',
+  root: 'Home',
+}

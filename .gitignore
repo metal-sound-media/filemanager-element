@@ -3,5 +3,6 @@ node_modules
 dist
 dist-ssr
 *.local
-server
+server/storage
 test-results
+.claude/settings.local.json
