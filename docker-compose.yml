@@ -1,0 +1,19 @@
+services:
+  dev:
+    build: .
+    ports:
+      - "3000:3000"
+    volumes:
+      - .:/app
+      - /app/node_modules
+
+  test:
+    build:
+      context: .
+      dockerfile: Dockerfile.test
+    command: sh -c "npm install && npm test"
+    volumes:
+      - .:/app
+      - /app/node_modules
+    environment:
+      - CI=true

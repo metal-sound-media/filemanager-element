@@ -61,10 +61,17 @@ export const mockApi = async (page: Page) => {
       status: 204,
     });
   });
-  await page.route("**/api/folders/*", (route) => {
-    return route.fulfill({
-      status: 204,
-    });
+  await page.route(/\/api\/folders\//, (route) => {
+    if (route.request().method() === "PATCH") {
+      const reqUrl = route.request().url();
+      const id = reqUrl.split("/").pop() ?? "0";
+      return route.fulfill({
+        status: 200,
+        contentType: "application/json",
+        body: JSON.stringify({ id, name: "Renamed Folder", parent: null }),
+      });
+    }
+    return route.fulfill({ status: 204 });
   });
 };
 
