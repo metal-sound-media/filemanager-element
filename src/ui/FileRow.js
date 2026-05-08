@@ -22,6 +22,7 @@ export function createFileRow(file, ctx) {
   const img = document.createElement('img')
   img.src = file.thumbnail
   img.alt = ''
+  img.loading = 'lazy'
   td2.appendChild(img)
 
   const td3 = document.createElement('td')

@@ -16,6 +16,7 @@ export function createFileCell(file, ctx) {
   const img = document.createElement('img')
   img.src = file.thumbnail
   img.alt = ''
+  img.loading = 'lazy'
   thumb.appendChild(img)
 
   const cleanups = []
