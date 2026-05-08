@@ -188,6 +188,7 @@
   margin: 0;
   list-style: none;
   padding: 0;
+  min-width: max-content;
 }
 
 .fm-folders ul {
@@ -244,12 +245,9 @@
 
 .fm-folder-name {
   color: var(--fm-nameColor);
-  overflow: hidden;
   margin-right: 1.5em;
   white-space: nowrap;
-  flex: 1;
-  width: 100%;
-  text-overflow: ellipsis;
+  flex: none;
 }
 
 .fm-folder .folder-icon {
@@ -327,7 +325,6 @@
   height: 44px;
   border-bottom: 1px solid var(--fm-border);
   gap: 4px;
-  overflow: hidden;
   cursor: pointer;
 }
 
@@ -358,6 +355,20 @@
   color: var(--fm-iconColor);
   font-size: .9em;
   user-select: none;
+}
+
+.fm-breadcrumb-scroll {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex: 1;
+  min-width: 0;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.fm-breadcrumb-scroll::-webkit-scrollbar {
+  display: none;
 }
 
 .fm-breadcrumb-form {

@@ -20,15 +20,11 @@ export function createBreadcrumb(container, ctx) {
     if (editing) return
     nav.innerHTML = ''
 
+    const scrollContainer = document.createElement('div')
+    scrollContainer.classList.add('fm-breadcrumb-scroll')
+
     path.forEach((folder, i) => {
       const isLast = i === path.length - 1
-
-      if (i > 0) {
-        const sep = document.createElement('span')
-        sep.classList.add('fm-breadcrumb-sep')
-        sep.textContent = '/'
-        nav.appendChild(sep)
-      }
 
       const btn = document.createElement('button')
       btn.classList.add('fm-breadcrumb-item')
@@ -36,22 +32,35 @@ export function createBreadcrumb(container, ctx) {
       if (folder === null) {
         btn.appendChild(iconHome(14))
         btn.setAttribute('aria-label', t('root'))
-      } else {
-        btn.textContent = folder.name
-      }
-
-      if (isLast) {
-        btn.classList.add('fm-breadcrumb-current')
-      } else {
-        btn.addEventListener('click', e => {
+        if (isLast) btn.classList.add('fm-breadcrumb-current')
+        else btn.addEventListener('click', e => {
           e.stopPropagation()
           ctx.folder.set(folder)
           ctx.folderPath.set(path.slice(0, i + 1))
         })
-      }
+        nav.appendChild(btn)
+      } else {
+        const sep = document.createElement('span')
+        sep.classList.add('fm-breadcrumb-sep')
+        sep.textContent = '/'
+        scrollContainer.appendChild(sep)
 
-      nav.appendChild(btn)
+        btn.textContent = folder.name
+        if (isLast) {
+          btn.classList.add('fm-breadcrumb-current')
+        } else {
+          btn.addEventListener('click', e => {
+            e.stopPropagation()
+            ctx.folder.set(folder)
+            ctx.folderPath.set(path.slice(0, i + 1))
+          })
+        }
+        scrollContainer.appendChild(btn)
+      }
     })
+
+    nav.appendChild(scrollContainer)
+    scrollContainer.scrollLeft = scrollContainer.scrollWidth
   }
 
   nav.addEventListener('click', e => {

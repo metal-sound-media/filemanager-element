@@ -8,6 +8,7 @@ FileManager.register('fn-file-manager', {
     return Promise.resolve(filesResponse(15, folder?.id))
   },
   getFolders(parent) {
+    if (parent?.name === 'Empty') return Promise.resolve([])
     return Promise.resolve(foldersResponse(10, parent?.id))
   },
   createFolder(params) {
