@@ -284,6 +284,8 @@
 .fm-folder-form svg { flex: none; }
 
 .fm-folder-form input {
+  color: var(--fm-color);
+  background-color: transparent;
   border: none;
   height: 24px;
   border-bottom: 1px solid var(--fm-iconColor);

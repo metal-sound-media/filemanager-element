@@ -16,9 +16,10 @@ export function createFilesList(container, folder, layout, ctx) {
   let listComponent = null
 
   const filesQuery = useQuery(filesQueryKey(folder?.id), () => ctx.options.getFiles(folder), {}, ctx.queryClient)
-  // foldersQuery is enabled: false — it reads from cache only (seeded by createFolder's onSuccess).
-  // Used solely to decide whether the folder has sub-folders for the isEmpty check below.
-  const foldersQuery = useQuery(foldersQueryKey(folder?.id), () => [], { enabled: false }, ctx.queryClient)
+  // foldersQuery is enabled: false — it reads from cache first (seeded by createFolder's onSuccess
+  // or by the sidebar tree). If the folder has never been expanded, render() triggers a refetch
+  // so we can confirm there are no sub-folders before showing the delete button.
+  const foldersQuery = useQuery(foldersQueryKey(folder?.id), () => ctx.options.getFolders(folder), { enabled: false }, ctx.queryClient)
   const deleteFolder = useDeleteFolderMutation(ctx)
 
   function render(filesState) {
@@ -29,6 +30,12 @@ export function createFilesList(container, folder, layout, ctx) {
       ? filesState.data.filter(f => searchQuery ? f.name.includes(searchQuery) : true)
       : []
     const foldersState = ctx.queryClient.getQueryState(foldersQueryKey(folder?.id))
+    // If files are empty and sub-folder state is unknown (folder never expanded, no eager children),
+    // trigger a fetch so we can confirm emptiness — re-render fires on completion via subscription.
+    if (folder?.id && filesState.isSuccess && filesState.data?.length === 0
+        && !folder?.children && !foldersState) {
+      foldersQuery.get().refetch()
+    }
     // A folder is deletable only when it has neither files nor sub-folders.
     // Check children from both the folder object (eager mode) and the query cache (lazy mode).
     const isEmpty = folder?.id &&
@@ -87,6 +94,7 @@ export function createFilesList(container, folder, layout, ctx) {
   }
 
   unsubs.push(filesQuery.subscribe(render))
+  unsubs.push(foldersQuery.subscribe(() => render(filesQuery.get())))
   unsubs.push(ctx.searchQuery.subscribe(() => render(filesQuery.get())))
   unsubs.push(deleteFolder.subscribe(() => render(filesQuery.get())))
 
