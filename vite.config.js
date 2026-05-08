@@ -7,6 +7,7 @@ const standalone = process.env.STANDALONE
 export default defineConfig({
   server: {
     port: 3000,
+    host: true,
   },
   plugins: [
     // API middleware only for dev server (not for builds)

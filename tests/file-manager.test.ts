@@ -188,6 +188,25 @@ Object.keys(hashes).forEach((key: keyof typeof hashes) => {
         await dropFile(page, ".fm-dropzone");
         await expect(page.locator("text=new_file.png").first()).toBeVisible();
       });
+
+      test("Clicking a file dispatches selectfile event on the host element", async ({ page }) => {
+        await page.locator("text=Folder 2").first().click();
+        await expect(page.locator(".fm-file").first()).toBeVisible();
+
+        const selectfilePromise = page.evaluate(() =>
+          new Promise<Record<string, unknown>>(resolve => {
+            const el = document.querySelector<HTMLElement>(
+              'file-manager:not([hidden]), fn-file-manager:not([hidden])'
+            )!;
+            el.addEventListener('selectfile', (e: Event) => resolve((e as CustomEvent).detail), { once: true });
+          })
+        );
+
+        await page.locator(".fm-file").first().click();
+        const detail = await selectfilePromise;
+        expect(detail).toHaveProperty("url");
+        expect(detail).toHaveProperty("name");
+      });
     });
   });
 });

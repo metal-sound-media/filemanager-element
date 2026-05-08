@@ -7,10 +7,10 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 All commands must be run inside the Docker container:
 
 ```bash
-docker compose run --rm dev npm run dev          # Vite dev server on port 3000
-docker compose run --rm dev npm run build        # Build library (ES module + standalone bundle)
-docker compose run --rm test                     # Playwright E2E tests (headless, CI mode)
-docker compose run --rm dev npm run test:api     # Node.js API unit tests (server/api.test.js)
+docker compose run --rm -p 3000:3000 dev npm run dev   # Vite dev server on port 3000
+docker compose run --rm dev npm run build              # Build library (ES module + standalone bundle)
+docker compose run --rm test                           # Playwright E2E tests (headless, CI mode)
+docker compose run --rm dev npm run test:api           # Node.js API unit tests (server/api.test.js)
 ```
 
 Run a single Playwright test by title:

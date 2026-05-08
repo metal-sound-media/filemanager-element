@@ -22,7 +22,7 @@ function createFileManagerUI(hostElement, { layout, lazyFolders }, ctx) {
 
     root = document.createElement('div')
     root.classList.add('fm-root')
-    hostElement.appendChild(root)
+    document.body.appendChild(root)
 
     const overlay = document.createElement('div')
     overlay.classList.add('fm-overlay')
@@ -55,6 +55,9 @@ function createFileManagerUI(hostElement, { layout, lazyFolders }, ctx) {
     const cleanupClickOutside = clickOutside(modal, 'close')
     modal.addEventListener('close', () => {
       hostElement.dispatchEvent(new CustomEvent('close', { bubbles: true }))
+    })
+    root.addEventListener('selectfile', e => {
+      hostElement.dispatchEvent(new CustomEvent('selectfile', { detail: e.detail, bubbles: true }))
     })
 
     // Unsubscribe from stores first so no callbacks fire on already-removed nodes,

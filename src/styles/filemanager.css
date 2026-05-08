@@ -22,6 +22,35 @@
   --fm-contrastTransparent: #457CFF33;
 }
 
+/* Reset HTML elements to browser defaults, preventing site-level CSS (Bootstrap, etc.)
+   from bleeding in. :where() zeroes the specificity so component class rules always win. */
+:where(.fm-root) input,
+:where(.fm-root) button,
+:where(.fm-root) select,
+:where(.fm-root) textarea,
+:where(.fm-root) ul,
+:where(.fm-root) ol,
+:where(.fm-root) li,
+:where(.fm-root) table,
+:where(.fm-root) thead,
+:where(.fm-root) tbody,
+:where(.fm-root) tr,
+:where(.fm-root) th,
+:where(.fm-root) td,
+:where(.fm-root) img {
+  all: revert;
+  box-sizing: border-box;
+}
+
+:where(.fm-root) input,
+:where(.fm-root) button,
+:where(.fm-root) select,
+:where(.fm-root) textarea {
+  font-family: inherit;
+  font-size: inherit;
+  color: inherit;
+}
+
 .fm-root *::-webkit-scrollbar { width: 7px; height: 7px; }
 .fm-root *::-webkit-scrollbar-track { background: var(--fm-background); padding: 1px; }
 .fm-root *::-webkit-scrollbar-thumb { background: var(--fm-border); border-radius: 4px; }
@@ -31,6 +60,7 @@
   background-color: var(--fm-overlay);
   position: fixed;
   top: 0; left: 0; right: 0; bottom: 0;
+  z-index: 10000;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -67,7 +97,7 @@
 /* --- Tooltip --- */
 .fm-root .fm-tooltip {
   pointer-events: none;
-  z-index: 9999;
+  z-index: 10001;
   visibility: visible;
   position: fixed;
   padding: 5px 9px;
@@ -123,6 +153,7 @@
   font-size: inherit;
   width: 100%;
   box-sizing: border-box;
+  background-color: var(--fm-background);
 }
 
 .fm-search input::placeholder {
